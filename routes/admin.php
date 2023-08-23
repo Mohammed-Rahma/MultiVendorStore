@@ -1,6 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\CategoriesController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('admin/products/' , [ProductsController::class , 'index']);
+Route::middleware('auth')->prefix('admin')->group(function(){
+
+    Route::resource('/categories' ,CategoriesController::class);
+
+});
+
