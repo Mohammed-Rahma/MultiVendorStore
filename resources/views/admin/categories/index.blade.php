@@ -12,8 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Image</th>
+
             <th>ID</th>
+            <th>Image</th>
             <th>Name</th>
             <th>Parent</th>
             <th>Created At</th>
@@ -24,12 +25,12 @@
     <tbody>
         @forelse($categories as $category)
         <tr>
+            <td>{{$category->id}}</td>
             <td>
                 <a href="{{$category->image_url}}" target="_blank">
                     <img src="{{$category->image_url}}" width="60" alt="">
                 </a>
             </td>
-            <td>{{$category->id}}</td>
             <td>{{$category->name}}</td>
             <td>{{$category->parent_id}}</td>
             <td>{{$category->created_at}}</td>

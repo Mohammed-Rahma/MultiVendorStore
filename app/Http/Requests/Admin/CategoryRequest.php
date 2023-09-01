@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\Filter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,11 +25,25 @@ class CategoryRequest extends FormRequest
     {
 
         return [
-         'name' => ['required', Rule::unique('categories' , 'name')->ignore($id)],
+         'name' => [
+            'required', Rule::unique('categories' , 'name')->ignore($id),
+            // function($attribute, $value, $fails){
+            //     if (strtolower($value) == 'laravel') {
+            //         $fails('this name is forbbiden!');
+            //     }
+            // }
+            new Filter(['aaaa' ,'laravel' , 'asd'])
+        ],
          'parent_id'=>'nullable|exists:categories,id',
          'image'=>'mimes:jpeg,jpg,png | max : 1000 ',
          'status'=>'in:active,archived',
          'description'=>['nullable' , 'requierd']
+        ];
+    }
+
+    public function messages(){
+        return [
+            'name.required'=>'The category name is mandatory!'
         ];
     }
 }
