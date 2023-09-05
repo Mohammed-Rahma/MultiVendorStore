@@ -20,8 +20,8 @@ class Filter implements ValidationRule
     } 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (in_array(strtolower($value) , $this->forbaddin)){
-           $fail('this is name forbbiden');
-        }
+      if(in_array(strtolower($value), $this->forbaddin ) ){    
+        $fail('the name is forbbadin');
+    }
     }
 }

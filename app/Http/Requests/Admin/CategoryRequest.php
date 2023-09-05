@@ -32,7 +32,7 @@ class CategoryRequest extends FormRequest
             //         $fails('this name is forbbiden!');
             //     }
             // }
-            new Filter(['aaaa' ,'laravel' , 'asd'])
+            new Filter(['pro' ,'category' , 'sport'])
         ],
          'parent_id'=>'nullable|exists:categories,id',
          'image'=>'mimes:jpeg,jpg,png | max : 1000 ',

@@ -10,16 +10,7 @@
 @endif
 
 
-
-<div class="mb-3">
-    <label for="">Category Name</label><br />
-    <input type="text" name="name" placeholder="name" @class([ 'form-control' , 'is-invalid'=>$errors->has('name'),
-    ])
-    value="{{ old('name' , $categories->name) }}">
-    @error('name')
-    <div class="invalid-feedback">{{$message}}</div>
-    @enderror
-</div>
+<x-form.input type="text" name="name" placeholder="Name" label="Category Name" value="{{$categories->name}}"/>
 
 <div class="mb-3">
     <label for="">Category Parent</label><br />
