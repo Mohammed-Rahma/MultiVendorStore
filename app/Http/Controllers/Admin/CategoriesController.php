@@ -22,11 +22,17 @@ class CategoriesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::paginate(2);
+        $categories = Category::leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')->select([
+            'categories.*',
+            'parents.name as parent_name',
+        ])
+            ->Filter($request)->paginate(2);
+        //order By('name', 'ASC' or 'DESC')
         return view('admin.Categories.index', [
-            'categories' => $categories
+            'categories' => $categories,
+            'title' => 'Categories List'
         ]);
     }
 
@@ -40,6 +46,10 @@ class CategoriesController extends Controller
         return view('admin.Categories.create', [
             'categories' => $categories,
             'parents' => $parents,
+            'status_option' => [
+                'active' => 'Active',
+                'archived' => 'Archived'
+            ],
 
         ]);
     }
@@ -51,7 +61,7 @@ class CategoriesController extends Controller
     {
         $data = $request->validated;
 
-        //Request merge 
+        //Request merge
         $request->merge([
             'slug' => Str::slug($request->post('name'))
         ]);
@@ -60,8 +70,8 @@ class CategoriesController extends Controller
         $data['image'] = $this->uploadImage($request);
 
         Category::create($data);
-        return redirect()->route('categories.index')->with('success', 'Category updated!');
-        //prg post redirect get 
+        return redirect()->route('categories.index')->with('success', 'Category Created!');
+        //prg post redirect get
     }
 
     /**
@@ -92,7 +102,11 @@ class CategoriesController extends Controller
             })->get();
         return view('admin.categories.edit', [
             'categories' => $categories,
-            'parents' => $parents
+            'parents' => $parents,
+            'status_option' => [
+                'active' => 'Active',
+                'archived' => 'Archived'
+            ],
         ]);
     }
 
@@ -101,7 +115,7 @@ class CategoriesController extends Controller
      */
     public function update(CategoryRequest $request, string $id)
     {
-        //validation 
+        //validation
         $data = $request->validated;
 
         $categories = Category::findORfail($id);
@@ -126,15 +140,41 @@ class CategoriesController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * اذا كنت مستخدم اسم الباراميتر في الراوت بنفس اسم الارقمنت في الفنكشن وحددت المودل بقدر استخدم الroute model bindding
+     * وفرت ع حالي كتابة سطر findorfail
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
+
     {
-        $categories = Category::findORfail($id);
-        $categories->delete();
-        if ($categories->image) {
-            Storage::disk('public')->delete($categories->image);
+        $category->delete();
+        return redirect()->route('categories.index')->with('success', "Category {($category->name)} deleted!");
+    }
+
+    public function trashed()
+    {
+        $category_trashed = Category::onlyTrashed()->paginate();
+        return view('admin.Categories.trashed', [
+            'categories' => $category_trashed,
+            'title' => 'Categories Trashed'
+        ]);
+    }
+
+
+
+    public function forceDelete(string $id)
+    {
+        $category_dele = Category::onlyTrashed()->findorfail($id);
+        $category_dele->forceDelete();
+        if($category_dele->image){
+            Storage::disk('public')->delete($category_dele->image);
         }
-        return redirect()->route('categories.index')->with('success', 'Category deleted!');
+        return redirect()->route('categories.index')->with('success', "Category {($category_dele->name)} deleted");
+    }
+
+    public function restore(string $id){
+        $category_rest = Category::onlyTrashed()->findorfail($id);
+        $category_rest->restore();
+        return redirect()->route('categories.index')->with('success', "Category {($category_rest->name)} deleted");
     }
 
     public function uploadImage(Request $request)

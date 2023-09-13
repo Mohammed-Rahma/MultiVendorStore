@@ -37,7 +37,7 @@ class CategoryRequest extends FormRequest
          'parent_id'=>'nullable|exists:categories,id',
          'image'=>'mimes:jpeg,jpg,png | max : 1000 ',
          'status'=>'in:active,archived',
-         'description'=>['nullable' , 'requierd']
+         'description'=>['nullable']
         ];
     }
 
