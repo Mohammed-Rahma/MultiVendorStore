@@ -28,7 +28,7 @@ class CategoriesController extends Controller
             'categories.*',
             'parents.name as parent_name',
         ])
-            ->Filter($request)->paginate(2);
+            ->Filter($request)->paginate();
         //order By('name', 'ASC' or 'DESC')
         return view('admin.Categories.index', [
             'categories' => $categories,
@@ -163,12 +163,12 @@ class CategoriesController extends Controller
 
     public function forceDelete(string $id)
     {
-        $category_dele = Category::onlyTrashed()->findorfail($id);
-        $category_dele->forceDelete();
-        if($category_dele->image){
-            Storage::disk('public')->delete($category_dele->image);
+        $category = Category::onlyTrashed()->findorfail($id);
+        $category->forceDelete();
+        if($category->image){
+            Storage::disk('public')->delete($category->image);
         }
-        return redirect()->route('categories.index')->with('success', "Category {($category_dele->name)} deleted");
+        return redirect()->route('categories.index')->with('success', "Category {($category->name)} deleted");
     }
 
     public function restore(string $id){

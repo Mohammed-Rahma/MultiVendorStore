@@ -33,7 +33,7 @@ class Category extends Model
             $query->where('categories.name' , 'Like' , "%$value%");
         });
     }
-     
+
     public function scopeActive(Builder $builder){
        $builder->where('status','=', 'active');
     }
