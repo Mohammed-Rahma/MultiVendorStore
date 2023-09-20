@@ -48,6 +48,7 @@
                 <th>Price</th>
                 <th>Compare Price</th>
                 <th>Featured</th>
+                <th>Status</th>
                 <th colspan="2"></th>
 
             </tr>
@@ -68,6 +69,7 @@
                 <td>{{$product->price}}</td>
                 <td>{{$product->compare_price}}</td>
                 <td>{{$product->featured}}</td>
+                <td>{{$product->status}}</td>
 
                 <td>
                     <a href="{{route('products.edit' , $product->id)}}" class="btn btn-sm btn-outline-dark"><i class="fas fa-edit"></i></i> Edit</a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate();
+        $products = Product::paginate(7);
         return view(
             'admin.products.index',
             [
@@ -53,7 +54,15 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $products = Product::findorfail($id);
+
+        return view('admin.products.edit', [
+            'products' => $products,
+            'status_option' => [
+                'active' => 'Active',
+                'archived' => 'Archived'
+            ],
+        ]);
     }
 
     /**
