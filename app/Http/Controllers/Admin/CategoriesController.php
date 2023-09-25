@@ -24,11 +24,19 @@ class CategoriesController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')->select([
-            'categories.*',
-            'parents.name as parent_name',
-        ])
-            ->Filter($request)->paginate();
+        $categories = Category::with('parent')
+            //    -> leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')->select([
+            //         'categories.*',
+            //         'parents.name as parent_name',
+            //     ])
+            // ->select('categories.*')
+            // ->selectRaw('SELECT COUNT(*) from products where category_id = categories.id')
+            ->withCount(['products'=>function ($query) {
+                $query->where('status', '=', 'active');
+            }])
+            ->Filter($request)
+            ->orderBy('categories.name')
+            ->paginate();
         //order By('name', 'ASC' or 'DESC')
         return view('admin.Categories.index', [
             'categories' => $categories,
@@ -77,9 +85,13 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        return view('admin.categories.show',
+            [
+                'categories' => $category,
+            ]
+        );
     }
 
     /**
@@ -165,13 +177,14 @@ class CategoriesController extends Controller
     {
         $category = Category::onlyTrashed()->findorfail($id);
         $category->forceDelete();
-        if($category->image){
+        if ($category->image) {
             Storage::disk('public')->delete($category->image);
         }
         return redirect()->route('categories.index')->with('success', "Category {($category->name)} deleted");
     }
 
-    public function restore(string $id){
+    public function restore(string $id)
+    {
         $category_rest = Category::onlyTrashed()->findorfail($id);
         $category_rest->restore();
         return redirect()->route('categories.index')->with('success', "Category {($category_rest->name)} deleted");

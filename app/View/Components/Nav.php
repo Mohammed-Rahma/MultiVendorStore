@@ -25,7 +25,7 @@ class Nav extends Component
         ],
         [
             'icon'=>'far fa-circle nav-icon',
-            'route'=>'categories.index',
+            'route'=>'products.index',
             'title'=>'Products',
             'active'=>'products.*',
 
@@ -36,8 +36,8 @@ class Nav extends Component
             'title'=>'Orders',
             'active'=>'orders.*',
 
-        ],  
-    
+        ],
+
     ];
 
     public $active;

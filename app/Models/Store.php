@@ -17,6 +17,11 @@ class Store extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'int';//pk 'string'
     public $incrementing = true;
-    public $timestamps = true ; 
+    public $timestamps = true ;
 
+    public function products(){
+       return $this->hasMany(Product::class);
+    }
 }
+
+
