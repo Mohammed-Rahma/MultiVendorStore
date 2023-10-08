@@ -43,6 +43,7 @@
                 <th>Image</th>
                 <th>Name</th>
                 <th>Parent</th>
+                <th>Products#</th>
                 <th>Created At</th>
                 <th>Status</th>
                 <th colspan="2"></th>

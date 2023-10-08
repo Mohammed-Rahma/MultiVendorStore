@@ -32,7 +32,7 @@ class CategoriesController extends Controller
             // ->select('categories.*')
             // ->selectRaw('SELECT COUNT(*) from products where category_id = categories.id')
             ->withCount(['products'=>function ($query) {
-                $query->where('status', '=', 'active');
+                $query->where('products.status', '=', 'active');
             }])
             ->Filter($request)
             ->orderBy('categories.name')

@@ -177,7 +177,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">{{Auth::user()->name}}</a>
+            <a href="{{ route('admin.profile.edit')}}" class="d-block">{{Auth::user()->name}}</a>
+            <br>
             <form action="{{route('logout')}}" method="post">
               @csrf
               <button type="submit" class="btn-sm btn btn-outline-primary">Logout</button>
@@ -202,7 +203,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         {{-- @include('layouts.partials.nav' , ['active' => ' dashboard' , ]) --}}
         <x-nav/>
-        
+
       </div>
       <!-- /.sidebar -->
     </aside>

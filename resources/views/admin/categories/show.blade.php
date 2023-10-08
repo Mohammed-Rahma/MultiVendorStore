@@ -8,7 +8,7 @@
         <thead>
             <tr>
 
-                <th>Name</th>
+                <th>Products Name</th>
                 <th>Parent</th>
                 <th>Created At</th>
                 <th>Status</th>

@@ -1,4 +1,4 @@
-@props([ 'label'=>'' , 'name' , 'placeholder' , 'type'=>'text' , 'value'=>''
+@props([ 'label'=>'' , 'name' , 'placeholder'=>'' , 'type'=>'text' , 'value'=>''
 ])
 
 <div class="mb-3">
